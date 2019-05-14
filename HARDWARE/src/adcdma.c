@@ -1,7 +1,7 @@
 #include "adc.h"
 
 extern unsigned char Send_OK;
-volatile unsigned short int AD_Value[16][5];
+volatile unsigned int AD_Value[8][3];
 
 void  Adc_Init(void){
   GPIO_InitTypeDef  		GPIO_InitStructure;
@@ -22,14 +22,14 @@ void  Adc_Init(void){
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	DMA_InitStructure.DMA_Channel = DMA_Channel_0;//通道选择
-  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)&ADC1->DR;//外设地址
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)0x40012308;//外设地址
   DMA_InitStructure.DMA_Memory0BaseAddr = (u32)AD_Value;//内存地址
   DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;//外设到内存
   DMA_InitStructure.DMA_BufferSize = 24;//数据量
   DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;//外设非增量模式
   DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;//存储器增量模式
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;//外设数据长度半字
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;//存储器数据长度半字
+  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Word;//外设数据长度半字
+  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Word;//存储器数据长度半字
   DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;//循环模式
   DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
   DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;
@@ -42,7 +42,7 @@ void  Adc_Init(void){
 	/* Configure ADC1 */
   ADC_CommonInitStructure.ADC_Mode = ADC_TripleMode_Interl;
   ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles;//多重模式下两个采样阶段之间的延迟5个时钟
-  ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_1;//DMA模式1
+  ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_2;//DMA模式2
   ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div2;//2分频。ADCCLK=PCLK2/4=72/2=36Mhz,ADC时钟最好不要超过36Mhz
   ADC_CommonInit(&ADC_CommonInitStructure);
   ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
