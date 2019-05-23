@@ -5,15 +5,16 @@
 
  File name : TripleAdcCyclicScan.c
 
- Description :¸该可执行文件定义了STM32F4三重ADC循环扫描的所有配置
+ Description :¸该可执行文件包含了STM32F4三重ADC循环扫描的所有配置。
 
  Hardware Platform : STM32F407
 ********************************************************************************/
 #include "TripleAdcCyclicScan.h"
+#include "stm32f4xx.h"
 
 volatile unsigned int AD_Value[10][6];//AD采样寄存器
 
-void  AdcInit(void){
+void AdcInit(void){
   GPIO_InitTypeDef       GPIO_InitStructure;
   DMA_InitTypeDef        DMA_InitStructure;
   ADC_CommonInitTypeDef  ADC_CommonInitStructure;
